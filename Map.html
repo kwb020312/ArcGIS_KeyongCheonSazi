@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <title>map</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            float: left;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRzie7cIcTm8bpFiQeSTh4rDTFJpZ41EI&callback=initMap"></script>
+    <script>
+        const marker = {
+            lat:37.3395059,
+            lng:127.09367619999999
+        }
+        let map;
+        async function initMap() {
+            // 현재 위치 구하기
+            await navigator.geolocation.getCurrentPosition(a => {
+                marker.lat = a.coords.latitude,
+                marker.lng = a.coords.longitude,
+                console.log(marker.lng , marker.lat)
+            })
+            // 맵 (뼈대)
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: marker,
+                zoom: 12,
+                mapTypeId:'roadmap',
+                streetViewControl:true,
+                rotateControl:true
+            });
+            // bounds
+            const bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(37.3395059, 127.09367619999999),
+                new google.maps.LatLng(37, 127)
+            );
+            // 3D 모델 불러오기
+            class GLTFOverlay extends google.maps.OverlayView {
+                constructor(bounds,url) {
+                    super()
+                    this.bounds = bounds
+                    this.url = url
+                }
+                onAdd() {
+                    this.iframe = document.createElement('iframe')
+                    this.iframe.src = this.url
+                    this.iframe.style.width = '100px'
+                    this.iframe.style.height = '100px'
+                    this.iframe.style.border = 'none'
+                    const panes = this.getPanes()
+                    panes.overlayLayer.appendChild(this.iframe)
+                }
+                draw() {
+                    const overlayProjection = this.getProjection()
+                    const sw = overlayProjection.fromLatLngToDivPixel(
+                        this.bounds.getSouthWest()
+                    )
+                    const ne = overlayProjection.fromLatLngToDivPixel(
+                        this.bounds.getNorthEast()
+                    )
+                    // if(this.iframe) {
+                    //     this.iframe.style.left = sw.x+'px'
+                    //     this.iframe.style.top = ne.y+'px'
+                    //     this.iframe.style.width = ne.x - sw.x + 'px'
+                    //     this.iframe.style.height = sw.y - ne.y + 'px'
+                    // }
+                }
+            }
+            const overlay = new GLTFOverlay(bounds,'http://localhost:3000/3D')
+            overlay.setMap(map)
+            // 마커1 (회사위치)
+            const point = new google.maps.Marker({
+                position: marker,
+                map:map
+            })
+            // 마커1 정보
+            const pointInfo = new google.maps.InfoWindow({
+                content:`
+                    <center>
+                        <p>위프코</p>
+                    </center>
+                `
+            })
+            // 마커1 클릭 이벤트
+            point.addListener('click', () => {
+                map.setZoom(15)
+                map.setCenter(point.getPosition())
+            })
+            // 마커1 마우스오버 이벤트
+            point.addListener('mouseover' , () => {
+                pointInfo.open(map,point)
+            })
+            // 마커1 마우스아웃 이벤트
+            point.addListener('mouseout' , () => {
+                pointInfo.close()
+            })
+        }
+    </script>
+</body>
+</html>
