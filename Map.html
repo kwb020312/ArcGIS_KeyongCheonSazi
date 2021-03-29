@@ -12,103 +12,641 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            user-select: none;
         }
 
+        /* 지도 */
         #map {
             float: left;
-            height: 100%;
+            height: 85%;
             width: 100%;
+        }
+
+        /* 마커 클릭 시 이미지 */
+        .clickImg {
+            /* background-image: url('gitImages/Public_Image.png'); */
+            background-size: cover;
+            padding:0;
+            margin:0;
+            width:360px;
+            height:240px;
+            transition: all .5s;
+        }
+
+        /* 모달 창 여백제거 */
+        .gm-style-iw-d {
+            overflow: hidden !important;
+        }
+        .gm-style .gm-style-iw-c {
+            padding:0;
+        }
+        *:focus {
+            outline: none;
+        }
+
+        /* 모달 창 */
+        .btmText {
+            position: absolute;
+            left:15px;
+            bottom: 15px;
+            font-size: 14px;
+            color: rgba(255,255,255,.7);
+            line-height: 1;
+        }
+        .titleName {
+            font-family: abril,georgia,serif;
+            font-size: 24px;
+            color: #fff;
+            margin: 4px 0 6px 0;
+        }
+        .gm-style .gm-style-iw-t::after {
+            background: linear-gradient(45deg,#ffce00 50%,rgba(255,255,255,0) 51%,rgba(255,255,255,0) 100%)!important
+        }
+        .btmLine {
+            background-color: #ffce00;
+            width:100%;
+            height:8px;
+            position: absolute;
+            bottom: 0;
+        }
+        .gm-style .gm-style-iw-c {
+            border-radius: 0;
+        }
+        /* 필러링 바 포괄 div */
+        .FilterBar {
+            background: #232629;
+            height: 54px;
+        }
+        /* 필터링 바 좌측 드래그 영역 */
+        .LeftHandle {
+            position: absolute;
+            left: 0;
+            top:0;
+            width: 17px;
+            height:54px;
+            content: '';
+            cursor: ew-resize;
+            background-color: rgb(89,90,91);
+        }
+        /* 필터링 바 좌측 드래그 영역 아이콘 */
+        .LeftIcon {
+            color: white;
+            position: absolute;
+            top:50%;
+            margin-top: -13px;
+            left:50%;
+            margin-left: -6px;
+        }
+        /* 필터링 바 우측 드래그 영역 */
+        #RightHandle {
+            position: absolute;
+            right: 0;
+            top:0;
+            width: 17px;
+            height:54px;
+            content: '';
+            cursor: ew-resize;
+            background-color: rgb(89,90,91);
+        }
+        /* 필터링 바 좌측 드래그 영역 아이콘 */
+        .RightIcon {
+            color: white;
+            position: absolute;
+            top:50%;
+            margin-top: -13px;
+            left:50%;
+            margin-left: -6px;
+        }
+        /* 모달 창 오른 쪽 하단 이미지 슬라이드 영역 */
+        .RightBtmBtn {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            width: 136px;
+            height: 48px;
+        }
+        /* 모달 오른 하단 슬라이드 서클 라인 */
+        .CircleLine {
+            position: absolute;
+            top: 50%;
+            margin: -3px 0px 0px 50px;
+        }
+        /* 모달 슬라이드 각 개체 동그라미 */
+        .Circle {
+            width:7px;
+            height:7px;
+            border-radius: 50%;
+            background-color: white;
+            display: inline-block;
+            margin-left: 5px;
+            opacity: 0.4;
+            cursor: pointer;
+        }
+        /* 선택된 슬라이드 개체 */
+        .Circle.Selected {
+            background-color: white;
+            opacity: 1;
+        }
+        /* 하단 흑배경 */
+        .BtmBlack {
+            background-color: black;
+            opacity: 0.5;
+            width: 200%;
+            position: absolute;
+            height: 65px;
+            left: -20;
+            bottom: 0;
+            filter: blur(5px);
+        }
+        /* 상단 타임라벨 */
+        .Top_GoldenBar {
+            margin: 17px 0 0 8.7%;
+            width: 2px;
+            height: 22px;
+            background: rgba(255,206,0,.5);
+            display: inline-block;
+        }
+        .Top_Age {
+            color: white;
+            font-size: 8px;
+            position: absolute;
+            top:0;
+            transform: translateX(-11px);
         }
     </style>
 </head>
 <body>
+    <!-- 필터링 바 -->
+    <div class="FilterBar">
+        <div id="LeftHandle" class="LeftHandle">
+            <div id="LeftIcon" class="LeftIcon"><</div>
+        </div>
+        <div id="RightHandle" class="RightHandle">
+            <div id="RightIcon" class="RightIcon">></div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">800 BCE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">600 BCE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">400 BCE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">200 BCE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">0 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">200 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">400 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">600 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">800 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">1000 CE</div>
+        </div>
+    </div>
+    <!-- 지도 표시 -->
     <div id="map"></div>
+    <!-- 마커 클러스터링 -->
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <!-- 구글 맵 -->
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRzie7cIcTm8bpFiQeSTh4rDTFJpZ41EI&callback=initMap"></script>
     <script>
+        // 시작 위치
         const marker = {
             lat:37.3395059,
             lng:127.09367619999999
         }
+
+        // 화면 상단 드래그 이벤트
+        let LeftDragging = false
+        let RightDragging = false
+        window.addEventListener('mousedown', (e) => {
+            switch(e.target) {
+                case LeftHandle:
+                case LeftIcon:
+                    LeftDragging = true
+                    break
+                case RightHandle:
+                case RightIcon:
+                    RightDragging = true
+                    break
+                default: 
+                    break
+            }
+        })
+        window.addEventListener('mousemove' , (e) => {
+            if(LeftDragging && e.x > -1) {
+                LeftHandle.style.left = e.x+'px';
+            }
+            if(RightDragging && e.x < window.innerWidth) {
+                RightHandle.style.right = window.innerWidth - e.x+'px'
+            }
+        })
+        window.addEventListener('mouseup', (e) => {
+            LeftDragging = false
+            RightDragging = false
+        })
+
+        // 화면 사이즈 조정 시 상단 바 최대위치로
+        const body = document.querySelector('body')
+        window.addEventListener('resize' , e => {
+            RightHandle.style.left = e.currentTarget.innerWidth - RightHandle.offsetWidth + 'px'
+            LeftHandle.style.left = 0;
+        })
+
+        // 화면 상단 클릭 이벤트
+        document.querySelector('.FilterBar').addEventListener('click', (e) => {
+            let Right_Blank = RightHandle.offsetLeft
+            let Left_Blank = LeftHandle.offsetLeft
+            if(e.x - Left_Blank <= Right_Blank - e.x) {
+                LeftHandle.style.left = e.x + 'px';
+            } else {
+                RightHandle.style.left = e.x + 'px';
+            }
+        })
+
+        // 위치 배열
+        const locations = [
+            { lat: 37.3395059, lng: 127.09367619999999, history: 1999 },
+            { lat: -31.56391, lng: 147.154312, history: 2002 },
+            { lat: -33.718234, lng: 150.363181 },
+            { lat: -33.727111, lng: 150.371124 },
+            { lat: -33.848588, lng: 151.209834 },
+            { lat: -33.851702, lng: 151.216968 },
+            { lat: -34.671264, lng: 150.863657 },
+            { lat: -35.304724, lng: 148.662905 },
+            { lat: -36.817685, lng: 175.699196 },
+            { lat: -36.828611, lng: 175.790222 },
+            { lat: -37.75, lng: 145.116667 },
+            { lat: -37.759859, lng: 145.128708 },
+            { lat: -37.765015, lng: 145.133858 },
+            { lat: -37.770104, lng: 145.143299 },
+            { lat: -37.7737, lng: 145.145187 },
+            { lat: -37.774785, lng: 145.137978 },
+            { lat: -37.819616, lng: 144.968119 },
+            { lat: -38.330766, lng: 144.695692 },
+            { lat: -39.927193, lng: 175.053218 },
+            { lat: -41.330162, lng: 174.865694 },
+            { lat: -42.734358, lng: 147.439506 },
+            { lat: -42.734358, lng: 147.501315 },
+            { lat: -42.735258, lng: 147.438 },
+            { lat: -43.999792, lng: 170.463352 },
+        ];
         let map;
+        let clickImg = document.querySelector('.clickImg')
         async function initMap() {
-            // 현재 위치 구하기
-            await navigator.geolocation.getCurrentPosition(a => {
-                marker.lat = a.coords.latitude,
-                marker.lng = a.coords.longitude,
-                console.log(marker.lng , marker.lat)
-            })
+
             // 맵 (뼈대)
             map = new google.maps.Map(document.getElementById("map"), {
                 center: marker,
                 zoom: 12,
-                mapTypeId:'roadmap',
-                streetViewControl:true,
-                rotateControl:true
+                styles: [
+                    {
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#212121"
+                        }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.icon",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#757575"
+                        }
+                        ]
+                    },
+                    {
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                        {
+                            "color": "#212121"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#757575"
+                        },
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.country",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#9e9e9e"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.land_parcel",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.locality",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#bdbdbd"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "administrative.neighborhood",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#757575"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#181818"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#616161"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "poi.park",
+                        "elementType": "labels.text.stroke",
+                        "stylers": [
+                        {
+                            "color": "#1b1b1b"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry.fill",
+                        "stylers": [
+                        {
+                            "color": "#2c2c2c"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.icon",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#8a8a8a"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#373737"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#3c3c3c"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "labels",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.highway.controlled_access",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#4e4e4e"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "road.local",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#616161"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#757575"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "geometry",
+                        "stylers": [
+                        {
+                            "color": "#000000"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text",
+                        "stylers": [
+                        {
+                            "visibility": "off"
+                        }
+                        ]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "labels.text.fill",
+                        "stylers": [
+                        {
+                            "color": "#3d3d3d"
+                        }
+                        ]
+                    }
+                ]
             });
+
             // bounds
             const bounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(37.3395059, 127.09367619999999),
                 new google.maps.LatLng(37, 127)
             );
-            // 3D 모델 불러오기
-            class GLTFOverlay extends google.maps.OverlayView {
-                constructor(bounds,url) {
-                    super()
-                    this.bounds = bounds
-                    this.url = url
-                }
-                onAdd() {
-                    this.iframe = document.createElement('iframe')
-                    this.iframe.src = this.url
-                    this.iframe.style.width = '100px'
-                    this.iframe.style.height = '100px'
-                    this.iframe.style.border = 'none'
-                    const panes = this.getPanes()
-                    panes.overlayLayer.appendChild(this.iframe)
-                }
-                draw() {
-                    const overlayProjection = this.getProjection()
-                    const sw = overlayProjection.fromLatLngToDivPixel(
-                        this.bounds.getSouthWest()
-                    )
-                    const ne = overlayProjection.fromLatLngToDivPixel(
-                        this.bounds.getNorthEast()
-                    )
-                    // if(this.iframe) {
-                    //     this.iframe.style.left = sw.x+'px'
-                    //     this.iframe.style.top = ne.y+'px'
-                    //     this.iframe.style.width = ne.x - sw.x + 'px'
-                    //     this.iframe.style.height = sw.y - ne.y + 'px'
-                    // }
-                }
-            }
-            const overlay = new GLTFOverlay(bounds,'http://localhost:3000/3D')
-            overlay.setMap(map)
-            // 마커1 (회사위치)
-            const point = new google.maps.Marker({
-                position: marker,
-                map:map
+
+            // 마커 렌더링
+            const markers = locations.map((location, index) => new google.maps.Marker({
+                position: location,
+                label: 'A',
+                history: location.history
+            }))
+
+            // 모여있는 마커 클러스터링
+            new MarkerClusterer(map, markers, {
+                // 해당 (경로)1.png (경로)2.png 등으로 불러오기 때문에
+                // 이름을 적절하게 변경해야 함
+                imagePath: 'textures/TrexTooth'
             })
+
+            // infoWindow 배출함수
+            function InfoFactory(country, name, img) {
+                return `
+                    <div style="background-image:url('${img[0]}')" class="clickImg">
+                        <div class="BtmBlack">
+                            
+                        </div>
+                        <div class="btmText">
+                            <div class="titleCountry">${country}</div>
+                            <div class="titleName">${name}</div>
+                        </div>
+                        <div class="RightBtmBtn">
+                            <div class="CircleLine">
+                                ${img.map((a, i) => {
+                                    if(i === 0) {
+                                        return `<div onclick="this.parentNode.parentNode.parentNode.style.backgroundImage = 'url(${img[0]})';Array.from(this.parentNode.childNodes).filter(a => a instanceof HTMLElement === true ).map(a => {a.classList.remove('Selected'); this.classList.add('Selected')})" class="Circle Selected"></div>`
+                                    } else {
+                                        return `<div onclick="this.parentNode.parentNode.parentNode.style.backgroundImage = 'url(${img[i]})';Array.from(this.parentNode.childNodes).filter(a => a instanceof HTMLElement === true ).map(a => {a.classList.remove('Selected'); this.classList.add('Selected')})" class="Circle"></div>`
+                                    }
+                                })}
+                            </div>
+                        </div>
+                        <div class="btmLine"></div>
+                    </div>
+                `
+            }
+            
             // 마커1 정보
             const pointInfo = new google.maps.InfoWindow({
-                content:`
-                    <center>
-                        <p>위프코</p>
-                    </center>
-                `
+                content:InfoFactory('Korea', 'BaekDooSan',['gitImages/Public_Image.png','gitImages/구글맵실패.png'])
             })
+
             // 마커1 클릭 이벤트
-            point.addListener('click', () => {
-                map.setZoom(15)
-                map.setCenter(point.getPosition())
-            })
-            // 마커1 마우스오버 이벤트
-            point.addListener('mouseover' , () => {
-                pointInfo.open(map,point)
-            })
-            // 마커1 마우스아웃 이벤트
-            point.addListener('mouseout' , () => {
-                pointInfo.close()
+            markers[0].addListener('click', () => {
+                pointInfo.open(map,markers[0])
+                markers[0].setMap(null)
+                console.log(markers[0].history)
+                setTimeout(() => {
+                    markers[0].setMap(map)
+                },1000)
             })
         }
     </script>

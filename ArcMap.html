@@ -79,7 +79,7 @@
     </div>
     <script src="https://js.arcgis.com/4.18/"></script>
     <script>
-        require(["esri/config","esri/Map","esri/views/SceneView","esri/geometry/Point","esri/geometry/Mesh","esri/Graphic","esri/symbols/PointSymbol3D","esri/symbols/IconSymbol3DLayer","esri/widgets/DirectLineMeasurement3D","esri/views/ViewAnimation","esri/Viewpoint","esri/Camera"], function (esriConfig,Map, SceneView,Point,Mesh,Graphic,PointSymbol3D,IconSymbol3DLayer,DirectLineMeasurement3D,ViewAnimation,Viewpoint,Camera) {
+        require(["esri/config","esri/Map","esri/views/SceneView","esri/geometry/Point","esri/geometry/Mesh","esri/Graphic","esri/symbols/PointSymbol3D","esri/symbols/IconSymbol3DLayer","esri/widgets/DirectLineMeasurement3D","esri/views/ViewAnimation","esri/Viewpoint","esri/Camera","esri/Color"], function (esriConfig,Map, SceneView,Point,Mesh,Graphic,PointSymbol3D,IconSymbol3DLayer,DirectLineMeasurement3D,ViewAnimation,Viewpoint,Camera,Color) {
 
             // API Key
             esriConfig.apiKey = "AAPK9417ab0c95b04c5db5efb138f7ee486fMGPYpqoczPKJGW0EgqitPHZdEP06-pdZqTPbnbv7Gyugc9J6dog6X_XKRW0gHlXn";
@@ -154,7 +154,7 @@
                 haloColor: 'black',
                 haloSize: '2px',
                 text: '경천사지10층석탑',
-                backgroundColor: 'black'
+                backgroundColor: new Color('black')
             }
 
             view.graphics.add({
