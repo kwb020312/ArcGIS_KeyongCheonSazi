@@ -642,11 +642,12 @@
             // 마커1 클릭 이벤트
             markers[0].addListener('click', () => {
                 pointInfo.open(map,markers[0])
-                markers[0].setMap(null)
-                console.log(markers[0].history)
-                setTimeout(() => {
-                    markers[0].setMap(map)
-                },1000)
+                console.log(`This Markers History : ${markers[0].history}`)
+                // 마커 숨기기
+                // markers[0].setMap(null)
+                // setTimeout(() => {
+                //     markers[0].setMap(map)
+                // },1000)
             })
         }
     </script>
