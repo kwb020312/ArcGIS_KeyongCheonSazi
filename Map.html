@@ -18,7 +18,7 @@
         /* 지도 */
         #map {
             float: left;
-            height: 85%;
+            height: 90%;
             width: 100%;
         }
 
@@ -173,6 +173,29 @@
             top:0;
             transform: translateX(-11px);
         }
+        /* 최 하단 div */
+        .FooterBox {
+            padding-right: 10px;
+            padding-left: 10px;
+            text-align: center;
+            height: 30px;
+            padding-top: 10px;
+            background-color: #020202;
+            color: #85888d;
+            font-family: proximanova,sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            position: fixed;
+            bottom: 0;
+            right:0;
+            left:0;
+            line-height: 20px;
+        }
+        /* Footer UnderLine Font */
+        .BtmUnderLine {
+            border-bottom: 1px solid #85888d;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -217,6 +240,8 @@
     </div>
     <!-- 지도 표시 -->
     <div id="map"></div>
+    <!-- Footer -->
+    <footer class="FooterBox">All Content &copy; 2021 Wipco & Parters. All Rights Reserved. <span class="BtmUnderLine">Privacy Policy</span> | <span class="BtmUnderLine">Data Use Policy</span> | <span class="BtmUnderLine">Contact</span></footer>
     <!-- 마커 클러스터링 -->
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <!-- 구글 맵 -->
@@ -249,8 +274,8 @@
             if(LeftDragging && e.x > -1) {
                 LeftHandle.style.left = e.x+'px';
             }
-            if(RightDragging && e.x < window.innerWidth) {
-                RightHandle.style.right = window.innerWidth - e.x+'px'
+            if(RightDragging && e.x+RightHandle.offsetWidth < window.innerWidth) {
+                RightHandle.style.left = e.x+'px'
             }
         })
         window.addEventListener('mouseup', (e) => {
@@ -267,13 +292,16 @@
 
         // 화면 상단 클릭 이벤트
         document.querySelector('.FilterBar').addEventListener('click', (e) => {
-            let Right_Blank = RightHandle.offsetLeft
-            let Left_Blank = LeftHandle.offsetLeft
-            if(e.x - Left_Blank <= Right_Blank - e.x) {
-                LeftHandle.style.left = e.x + 'px';
-            } else {
-                RightHandle.style.left = e.x + 'px';
+            if(e.x+17 < window.innerWidth) {
+                let Right_Blank = RightHandle.offsetLeft
+                let Left_Blank = LeftHandle.offsetLeft
+                if(e.x - Left_Blank <= Right_Blank - e.x) {
+                    LeftHandle.style.left = e.x + 'px';
+                } else {
+                    RightHandle.style.left = e.x + 'px';
+                }
             }
+            
         })
 
         // 위치 배열
