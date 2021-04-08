@@ -177,7 +177,6 @@
         .FooterBox {
             padding-right: 10px;
             padding-left: 10px;
-            text-align: center;
             height: 30px;
             padding-top: 10px;
             background-color: #020202;
@@ -196,6 +195,15 @@
             border-bottom: 1px solid #85888d;
             cursor: pointer;
         }
+        /* 핸들 과 핸들 사이의 거리 */
+        #HandleDistance {
+            position: absolute;
+            height:54px;
+            width:100%;
+            top:0;
+            left:0;
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -204,6 +212,7 @@
         <div id="LeftHandle" class="LeftHandle">
             <div id="LeftIcon" class="LeftIcon"><</div>
         </div>
+        <div id="HandleDistance"></div>
         <div id="RightHandle" class="RightHandle">
             <div id="RightIcon" class="RightIcon">></div>
         </div>
@@ -223,19 +232,19 @@
             <div class="Top_Age">0 CE</div>
         </div>
         <div class="Top_GoldenBar">
-            <div class="Top_Age">200 CE</div>
-        </div>
-        <div class="Top_GoldenBar">
             <div class="Top_Age">400 CE</div>
-        </div>
-        <div class="Top_GoldenBar">
-            <div class="Top_Age">600 CE</div>
         </div>
         <div class="Top_GoldenBar">
             <div class="Top_Age">800 CE</div>
         </div>
         <div class="Top_GoldenBar">
-            <div class="Top_Age">1000 CE</div>
+            <div class="Top_Age">1200 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">1600 CE</div>
+        </div>
+        <div class="Top_GoldenBar">
+            <div class="Top_Age">2000 CE</div>
         </div>
     </div>
     <!-- 지도 표시 -->
@@ -247,6 +256,10 @@
     <!-- 구글 맵 -->
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRzie7cIcTm8bpFiQeSTh4rDTFJpZ41EI&callback=initMap"></script>
     <script>
+        // 전역 변수 선언
+        let MinNumber
+        let MaxNumber
+
         // 시작 위치
         const marker = {
             lat:37.3395059,
@@ -290,46 +303,33 @@
             LeftHandle.style.left = 0;
         })
 
-        // 화면 상단 클릭 이벤트
-        document.querySelector('.FilterBar').addEventListener('click', (e) => {
-            if(e.x+17 < window.innerWidth) {
-                let Right_Blank = RightHandle.offsetLeft
-                let Left_Blank = LeftHandle.offsetLeft
-                if(e.x - Left_Blank <= Right_Blank - e.x) {
-                    LeftHandle.style.left = e.x + 'px';
-                } else {
-                    RightHandle.style.left = e.x + 'px';
-                }
-            }
-            
-        })
-
         // 위치 배열
+        // 현재 아무 위치나 넣어두었음
         const locations = [
             { lat: 37.3395059, lng: 127.09367619999999, history: 1999 },
             { lat: -31.56391, lng: 147.154312, history: 2002 },
-            { lat: -33.718234, lng: 150.363181 },
-            { lat: -33.727111, lng: 150.371124 },
-            { lat: -33.848588, lng: 151.209834 },
-            { lat: -33.851702, lng: 151.216968 },
-            { lat: -34.671264, lng: 150.863657 },
-            { lat: -35.304724, lng: 148.662905 },
-            { lat: -36.817685, lng: 175.699196 },
-            { lat: -36.828611, lng: 175.790222 },
-            { lat: -37.75, lng: 145.116667 },
-            { lat: -37.759859, lng: 145.128708 },
-            { lat: -37.765015, lng: 145.133858 },
-            { lat: -37.770104, lng: 145.143299 },
-            { lat: -37.7737, lng: 145.145187 },
-            { lat: -37.774785, lng: 145.137978 },
-            { lat: -37.819616, lng: 144.968119 },
-            { lat: -38.330766, lng: 144.695692 },
-            { lat: -39.927193, lng: 175.053218 },
-            { lat: -41.330162, lng: 174.865694 },
-            { lat: -42.734358, lng: 147.439506 },
-            { lat: -42.734358, lng: 147.501315 },
-            { lat: -42.735258, lng: 147.438 },
-            { lat: -43.999792, lng: 170.463352 },
+            { lat: -33.718234, lng: 150.363181 , history: 1800 },
+            { lat: -33.727111, lng: 150.371124, history: 1600 },
+            { lat: -33.848588, lng: 151.209834, history: 1400 },
+            { lat: -33.851702, lng: 151.216968, history: 1200 },
+            { lat: -34.671264, lng: 150.863657, history: 1000 },
+            { lat: -35.304724, lng: 148.662905, history: 800 },
+            { lat: -36.817685, lng: 175.699196, history: 400 },
+            { lat: -36.828611, lng: 175.790222, history: 200 },
+            { lat: -37.75, lng: 145.116667, history: 0 },
+            { lat: -37.759859, lng: 145.128708, history: -200 },
+            { lat: -37.765015, lng: 145.133858, history: -400 },
+            { lat: -37.770104, lng: 145.143299, history: -600 },
+            { lat: -37.7737, lng: 145.145187, history: -800 },
+            { lat: -37.774785, lng: 145.137978, history: -1000 },
+            { lat: -37.819616, lng: 144.968119, history: -880 },
+            { lat: -38.330766, lng: 144.695692, history: -680 },
+            { lat: -39.927193, lng: 175.053218, history: -480 },
+            { lat: -41.330162, lng: 174.865694, history: -280 },
+            { lat: -42.734358, lng: 147.439506, history: -80 },
+            { lat: -42.734358, lng: 147.501315, history: 280 },
+            { lat: -42.735258, lng: 147.438, history: 480 },
+            { lat: -43.999792, lng: 170.463352, history: 680 },
         ];
         let map;
         let clickImg = document.querySelector('.clickImg')
@@ -627,6 +627,33 @@
                 label: 'A',
                 history: location.history
             }))
+            
+            // 화면 상단 클릭 이벤트
+            document.querySelector('.FilterBar').addEventListener('click', (e) => {
+                const Top_GoldenBars = document.querySelectorAll('.Top_GoldenBar')
+                if(e.x+17 < window.innerWidth) {
+                    let Right_Blank = RightHandle.offsetLeft
+                    let Left_Blank = LeftHandle.offsetLeft
+                    if(e.x - Left_Blank <= Right_Blank - e.x) {
+                        LeftHandle.style.left = e.x + 'px';
+                    } else {
+                        RightHandle.style.left = e.x + 'px';
+                    }
+                }
+                HandleDistance.style.left = `${LeftHandle.getBoundingClientRect().x + LeftHandle.offsetWidth}px`
+                HandleDistance.style.width = `${RightHandle.getBoundingClientRect().x - (LeftHandle.getBoundingClientRect().x + LeftHandle.offsetWidth)}px`
+                let FiltedArray = Array.from(Top_GoldenBars)
+                    .filter(a => Math.round(a.getBoundingClientRect().x) > (LeftHandle.getBoundingClientRect().x + LeftHandle.offsetWidth))
+                    .filter(a => Math.round(a.getBoundingClientRect().x) < RightHandle.getBoundingClientRect().x )
+                    .map(a => a.innerText.includes("BCE") ? Number('-'+a.innerText.match(/[0-9]/g).join("")) : Number(a.innerText.match(/[0-9]/g).join("")))
+                MinNumber = FiltedArray[0]
+                MaxNumber = Math.max.apply(null, FiltedArray)
+                markers
+                    .map(a => a.setMap(map))
+                markers
+                    .filter(a => a.history < MinNumber || a.history > MaxNumber )
+                    .map(a => a.setMap(null))
+            })
 
             // 모여있는 마커 클러스터링
             new MarkerClusterer(map, markers, {
@@ -670,12 +697,6 @@
             // 마커1 클릭 이벤트
             markers[0].addListener('click', () => {
                 pointInfo.open(map,markers[0])
-                console.log(`This Markers History : ${markers[0].history}`)
-                // 마커 숨기기
-                // markers[0].setMap(null)
-                // setTimeout(() => {
-                //     markers[0].setMap(map)
-                // },1000)
             })
         }
     </script>
